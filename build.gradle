@@ -63,11 +63,13 @@ minecraft {
 }
 
 repositories {
+	// local repo until we get a proper maven up
+	maven { url "file://C:/Users/Joseph/Saved Games/minecraft mods/cram/maven" }
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
-
+	compile fg.deobf("commoble.cram:${cram_branch}:${cram_version}:api")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
