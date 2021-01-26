@@ -50,28 +50,28 @@ public class PressurePlateBehaviors
 		int newPower = VanillaCramPressurePlateHelper.computeRedstoneStrength(block, world, pos);
 		boolean wasPowered = oldPower > 0;
 		boolean isPowered = newPower > 0;
+		BlockState newState = VanillaCramPressurePlateHelper.getBlockStateForPower(block, oldState, newPower);
 		if (newPower != oldPower)
 		{
-			BlockState newState = VanillaCramPressurePlateHelper.getBlockStateForPower(block, oldState, newPower);
 			cram.replaceState(oldState, newState, false);
 			world.notifyNeighborsOfStateChange(pos, block);
 			world.notifyNeighborsOfStateChange(pos.down(), block);
 			// pressure plates in normal worlds call world.markBlockRangeForRenderUpdate
 			// but that only does things on clients and plate states can only be updated on the server
 			// so the call does nothing and we'll omit it here
-			if (wasPowered && !isPowered)
-			{
-				VanillaCramPressurePlateHelper.playClickOffSound(block, world, pos);
-			}
-			else if (!wasPowered && isPowered)
-			{
-				VanillaCramPressurePlateHelper.playClickOnSound(block, world, pos);
-			}
-			
-			if (isPowered)
-			{
-				cram.scheduleTick(newState, VanillaCramPressurePlateHelper.getPoweredDuration(block));
-			}
+		}
+		if (wasPowered && !isPowered)
+		{
+			VanillaCramPressurePlateHelper.playClickOffSound(block, world, pos);
+		}
+		else if (!wasPowered && isPowered)
+		{
+			VanillaCramPressurePlateHelper.playClickOnSound(block, world, pos);
+		}
+		
+		if (isPowered)
+		{
+			cram.scheduleTick(newState, VanillaCramPressurePlateHelper.getPoweredDuration(block));
 		}
 	}
 }
